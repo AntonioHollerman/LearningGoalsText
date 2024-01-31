@@ -106,6 +106,7 @@ public class DbManager {
     }
     public void addCourse(String courseName, double courseHours){
         totalHours += courseHours;
+        totalHoursLeft += courseHours;
         coursesMap.put(courseName, courseHours);
         hoursNeededPerWeek = totalHoursLeft / weeksUntilOver;
     }
@@ -140,14 +141,16 @@ public class DbManager {
     public void displayInfo() {
         Set<String> courses = coursesMap.keySet();
         double courseHours;
-        int minutesLearning = (int) (hoursLearningForTheWeek - (int) hoursLearningForTheWeek) * 60;
+        double timeLeft = hoursNeededPerWeek - hoursLearningForTheWeek;
+        int minutesLearning = (int) ((timeLeft - (int) timeLeft) * 60);
 
         System.out.println("Percent Done: %" + (((hoursLearning / totalHours) * 100)));
         System.out.println("Total Hours: " + totalHours);
         System.out.println("Hours Spent Learning: " + hoursLearning);
         System.out.println("Hours Needed Every Week: " + ((int) hoursNeededPerWeek + 1));
-        System.out.println("Hours Left For The Week: " + ((int) hoursLearningForTheWeek) + " hours and " +
+        System.out.println("Hours Left For The Week: " + ((int) timeLeft) + " hours and " +
                 minutesLearning + " minutes");
+        System.out.println();
         for (String course : courses) {
             courseHours = coursesMap.get(course);
             System.out.println(course + ": " + (int) courseHours + " hours left");
