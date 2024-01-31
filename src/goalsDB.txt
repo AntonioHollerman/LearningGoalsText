@@ -1,5 +1,5 @@
-163
-0
+249.0
+0.0
 2024-06-06
 2024-01-29
-TensorFlow:50 - Data Engineering:100 - Blender:13
+Java:86.0 - Data Engineering:100.0 - Blender:13.0 - TensorFlow:50.0
