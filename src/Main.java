@@ -26,19 +26,29 @@ public class Main {
                     System.out.println("\n---------------------------------\n");
                     break;
                 case 2:
+                    System.out.println();
                     inputHandler.addCourse();
+                    System.out.println();
                     break;
                 case 3:
+                    System.out.println();
                     inputHandler.updateCourse();
+                    System.out.println();
                     break;
                 case 4:
+                    System.out.println();
                     inputHandler.removeCourse();
+                    System.out.println();
                     break;
                 case 5:
+                    System.out.println();
                     manager.resetGoals();
+                    System.out.println();
                     break;
                 case 6:
+                    System.out.println();
                     manager.changeTargetDate(GetInput.getTargetDate());
+                    System.out.println();
                     break;
             }
         }
