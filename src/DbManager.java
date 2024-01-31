@@ -46,6 +46,7 @@ public class DbManager {
             hoursNeededPerWeek = totalHoursLeft / weeksUntilOver;
             hoursLearningForTheWeek = Double.parseDouble(dbLines.get(1));
             checkDate(dbLines.get(3));
+            checkDatePass();
         }
     }
     private LocalDate formatDate(String date){
@@ -64,8 +65,26 @@ public class DbManager {
         }
         dateOfLastMonday = currentDate.with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
     }
-    public boolean targetDatePass(){
-        return dateOfTarget.toEpochDay() <= LocalDate.now().toEpochDay();
+    public void checkDatePass(){
+        String[] choices = {"Clear current courses", "Continue courses for new date"};
+        if (dateOfTarget.toEpochDay() > LocalDate.now().toEpochDay()){
+            return;
+        }
+        System.out.println("Target date has pass! Look how far you progress");
+        System.out.println("Total hours needed: " + totalHours);
+        System.out.println("Total hours completed: " + hoursLearning);
+        System.out.println("Percentage done: %" + ((int) (100 * (totalHours / hoursLearning))));
+        System.out.println("What do you to do now?");
+        int choiceIndex = GetInput.selectOption(choices);
+        if (choiceIndex == 0){
+            coursesMap.clear();
+            totalHours = 0;
+            hoursNeededPerWeek = 0;
+        } else {
+            totalHours = totalHoursLeft();
+        }
+        hoursLearning = 0;
+        dateOfTarget = GetInput.getTargetDate();
     }
     private void getCourses(String coursesLine){
         String[] courses = coursesLine.split(" - ");
