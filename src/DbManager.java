@@ -11,7 +11,7 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.time.DayOfWeek;
 public class DbManager {
-    public final HashMap<String, Double> coursesMap = new HashMap<>();
+    private final HashMap<String, Double> coursesMap = new HashMap<>();
     private double totalHours;
     private double hoursLearning;
     private double totalHoursLeft;
@@ -48,6 +48,9 @@ public class DbManager {
             checkDate(dbLines.get(3));
             checkDatePass();
         }
+    }
+    public Set<String> getCoursesNames(){
+        return coursesMap.keySet();
     }
     private LocalDate formatDate(String date){
         String[] info = date.split("-");
