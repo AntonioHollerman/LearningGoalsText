@@ -58,6 +58,9 @@ public class DbManager {
         }
         dateOfLastMonday = currentDate.with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
     }
+    public boolean targetDatePass(){
+        return dateOfTarget.toEpochDay() <= LocalDate.now().toEpochDay();
+    }
     private void getCourses(String coursesLine){
         String[] courses = coursesLine.split(" - ");
         String name;
