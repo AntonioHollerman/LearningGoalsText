@@ -11,7 +11,7 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.time.DayOfWeek;
 public class DbManager {
-    private final HashMap<String, Double> coursesMap = new HashMap<>();
+    public final HashMap<String, Double> coursesMap = new HashMap<>();
     private double totalHours;
     private double hoursLearning;
     private double totalHoursLeft;
