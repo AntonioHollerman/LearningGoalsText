@@ -21,7 +21,9 @@ public class Main {
                 case 0:
                     break outer;
                 case 1:
+                    System.out.println("\n---------------------------------\n");
                     manager.displayInfo();
+                    System.out.println("\n---------------------------------\n");
                     break;
                 case 2:
                     inputHandler.addCourse();

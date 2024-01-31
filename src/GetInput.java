@@ -89,8 +89,8 @@ public class GetInput {
     public static double getCourseHours(){
         return doubleInput("Amount of hours: ", false);
     }
-    public static double getHoursCompleted(){
-        return doubleInput("Hours Completed: ", true);
+    public static double getHoursCompleted(String display){
+        return doubleInput(display, true);
     }
     public static LocalDate getTargetDate(){
         int year;
