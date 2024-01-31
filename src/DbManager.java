@@ -26,21 +26,27 @@ public class DbManager {
         Path pathToFile = Path.of(System.getProperty("user.dir"), FILE_NAME);
 
         List<String> dbLines = null;
-        try{
-            dbLines = Files.readAllLines(pathToFile);
-        } catch (IOException e){
-            System.out.println("Oppsies :P");
-        }
+        if (!Files.exists(pathToFile)){
+            System.out.println("Hello User. To get started fill out when you want to have these " +
+                    "courses completed by. :D");
+            changeTargetDate(GetInput.getTargetDate());
+        } else {
+            try {
+                dbLines = Files.readAllLines(pathToFile);
+            } catch (IOException e) {
+                System.out.println("Oppsies :P");
+            }
 
-        assert dbLines != null;
-        getCourses(dbLines.get(4));
-        weeksUntilOver = getWeeksUntilOver(dbLines.get(2));
-        totalHours = Double.parseDouble(dbLines.get(0));
-        totalHoursLeft = totalHoursLeft();
-        hoursLearning = totalHours - totalHoursLeft;
-        hoursNeededPerWeek = totalHoursLeft / weeksUntilOver;
-        hoursLearningForTheWeek = Double.parseDouble(dbLines.get(1));
-        checkDate(dbLines.get(3));
+            assert dbLines != null;
+            getCourses(dbLines.get(4));
+            weeksUntilOver = getWeeksUntilOver(dbLines.get(2));
+            totalHours = Double.parseDouble(dbLines.get(0));
+            totalHoursLeft = totalHoursLeft();
+            hoursLearning = totalHours - totalHoursLeft;
+            hoursNeededPerWeek = totalHoursLeft / weeksUntilOver;
+            hoursLearningForTheWeek = Double.parseDouble(dbLines.get(1));
+            checkDate(dbLines.get(3));
+        }
     }
     private LocalDate formatDate(String date){
         String[] info = date.split("-");
