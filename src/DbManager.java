@@ -1,6 +1,15 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
+import java.time.DayOfWeek;
 public class DbManager {
     private final HashMap<String, Double> coursesMap = new HashMap<>();
     private double totalHours;
@@ -9,20 +18,65 @@ public class DbManager {
     private double hoursNeededPerWeek;
     private double hoursLearningForTheWeek;
     private int weeksUntilOver;
+    private LocalDate dateOfLastMonday;
+    private LocalDate dateOfTarget;
 
     public DbManager(){
         String FILE_NAME = "src\\goalsDB.txt";
         Path pathToFile = Path.of(System.getProperty("user.dir"), FILE_NAME);
 
-        weeksUntilOver = getWeeksUntilOver();
-        totalHours = ;
-        hoursLearning = ;
+        List<String> dbLines = null;
+        try{
+            dbLines = Files.readAllLines(pathToFile);
+        } catch (IOException e){
+            System.out.println("Oppsies :P");
+        }
+
+        assert dbLines != null;
+        getCourses(dbLines.get(4));
+        weeksUntilOver = getWeeksUntilOver(dbLines.get(2));
+        totalHours = Double.parseDouble(dbLines.get(0));
         totalHoursLeft = totalHoursLeft();
+        hoursLearning = totalHours - totalHoursLeft;
         hoursNeededPerWeek = totalHoursLeft / weeksUntilOver;
-        hoursLearningForTheWeek = ;
+        hoursLearningForTheWeek = Double.parseDouble(dbLines.get(1));
+        checkDate(dbLines.get(3));
+    }
+    private LocalDate formatDate(String date){
+        String[] info = date.split("-");
+        int year = Integer.parseInt(info[0]);
+        int month = Integer.parseInt(info[1]);
+        int day = Integer.parseInt(info[2]);
+        return LocalDate.of(year, month, day);
+    }
+    private void checkDate(String lastMonday){
+        LocalDate mondayDate = formatDate(lastMonday);
+        LocalDate currentDate = LocalDate.now();
+        long days = ChronoUnit.DAYS.between(mondayDate, currentDate);
+        if (days >= 7){
+            hoursLearningForTheWeek = 0;
+        }
+        dateOfLastMonday = currentDate.with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
+    }
+    private void getCourses(String coursesLine){
+        String[] courses = coursesLine.split(" - ");
+        String name;
+        double hours;
+        for (String course : courses){
+            String[] info = course.split(":");
+            name = info[0];
+            hours = Double.parseDouble(info[1]);
+            coursesMap.put(name, hours);
+        }
+    }
+    public void changeTargetDate(LocalDate dateOfTarget){
+        this.dateOfTarget = dateOfTarget;
+        weeksUntilOver = getWeeksUntilOver(dateOfTarget.toString());
     }
     public void addCourse(String courseName, double courseHours){
-       coursesMap.put(courseName, courseHours);
+        totalHours += courseHours;
+        coursesMap.put(courseName, courseHours);
+        hoursNeededPerWeek = totalHoursLeft / weeksUntilOver;
     }
     public void removeCourse(String courseName){
         coursesMap.remove(courseName);
@@ -37,12 +91,6 @@ public class DbManager {
             removeCourse(courseName);
         }
     }
-    public void writeInfo(){
-
-    }
-    public void getInfo(){
-
-    }
     private double totalHoursLeft(){
         Set<String> courses = coursesMap.keySet();
         double totalHours = 0;
@@ -52,14 +100,18 @@ public class DbManager {
         }
         return totalHours;
     }
-    private int getWeeksUntilOver(){
-
+    private int getWeeksUntilOver(String targetDate){
+        LocalDate dateInFuture = formatDate(targetDate);
+        LocalDate currentDate = LocalDate.now();
+        dateOfTarget = dateInFuture;
+        return (int) ChronoUnit.WEEKS.between(currentDate, dateInFuture);
     }
     public void displayInfo() {
         Set<String> courses = coursesMap.keySet();
         double courseHours;
         int minutesLearning = (int) (hoursLearningForTheWeek - (int) hoursLearningForTheWeek) * 60;
 
+        System.out.println("Percent Done: %" + ((int) ((hoursLearning / totalHours) * 100)));
         System.out.println("Total Hours: " + totalHours);
         System.out.println("Hours Spent Learning: " + hoursLearning);
         System.out.println("Hours Needed Every Week: " + ((int) hoursNeededPerWeek + 1));
@@ -69,5 +121,39 @@ public class DbManager {
             courseHours = coursesMap.get(course);
             System.out.println(course + ": " + courseHours + "hours left");
         }
+    }
+    public void writeInfo(){
+        String FILE_NAME = "src\\goalsDB.txt";
+        Path pathToFile = Path.of(System.getProperty("user.dir"), FILE_NAME);
+
+        Set<String> coursesSet = coursesMap.keySet();
+        String[] coursesArr = new String[coursesSet.size()];
+
+        int i = 0;
+        for (String course : coursesSet){
+            coursesArr[i] = course + ":" + coursesMap.get(course);
+            i ++;
+        }
+
+        String coursesText = String.join(" - ", coursesArr);
+
+        try {
+            FileWriter fileWriter = new FileWriter(String.valueOf(pathToFile));
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+
+            printWriter.println(totalHours);
+            printWriter.println(hoursLearningForTheWeek);
+            printWriter.println(dateOfTarget);
+            printWriter.println(dateOfLastMonday);
+            printWriter.println(coursesText);
+            printWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file.");
+        }
+    }
+    public void resetGoals(){
+        totalHours = totalHoursLeft();
+        hoursLearning = 0;
+        hoursLearningForTheWeek = 0;
     }
 }
