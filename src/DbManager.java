@@ -117,6 +117,7 @@ public class DbManager {
         double hoursLeft = coursesMap.get(courseName) - hoursSpent;
         hoursLearning += hoursSpent;
         totalHoursLeft -= hoursSpent;
+        hoursLearningForTheWeek += hoursSpent;
         coursesMap.put(courseName, hoursLeft);
 
         if (hoursLeft <= 0){
@@ -144,9 +145,9 @@ public class DbManager {
         double timeLeft = hoursNeededPerWeek - hoursLearningForTheWeek;
         int minutesLearning = (int) ((timeLeft - (int) timeLeft) * 60);
 
-        System.out.println("Percent Done: %" + (((hoursLearning / totalHours) * 100)));
-        System.out.println("Total Hours: " + totalHours);
-        System.out.println("Hours Spent Learning: " + hoursLearning);
+        System.out.println("Percent Done: %" + GetInput.round(((hoursLearning / totalHours) * 100)));
+        System.out.println("Total Hours: " + GetInput.round(totalHours));
+        System.out.println("Hours Spent Learning: " + GetInput.round(hoursLearning));
         System.out.println("Hours Needed Every Week: " + ((int) hoursNeededPerWeek + 1));
         System.out.println("Hours Left For The Week: " + ((int) timeLeft) + " hours and " +
                 minutesLearning + " minutes");

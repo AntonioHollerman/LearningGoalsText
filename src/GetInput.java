@@ -26,7 +26,7 @@ public class GetInput {
             }
         }
     }
-    public static double doubleInput(String display, boolean allowNegZero){
+    public static double doubleInput(String display, boolean allowNeg){
         // Prompts user input for an int and returns the value
         Scanner scanner = new Scanner(System.in);
         String input;
@@ -38,11 +38,11 @@ public class GetInput {
                 input = scanner.nextLine();
                 num = Double.parseDouble(input);
                 // logic for allowing negative and zero
-                if (allowNegZero){
+                if (allowNeg){
                     return num;
                     // logic for not allowing negative and zero
                 } else {
-                    if (num > 0){
+                    if (num >= 0){
                         return num;
                     }
                     System.out.println("Invalid input please provide an int greater than zero");
@@ -89,8 +89,10 @@ public class GetInput {
     public static double getCourseHours(){
         return doubleInput("Amount of hours: ", false);
     }
-    public static double getHoursCompleted(String display){
-        return doubleInput(display, true);
+    public static double getHoursCompleted(String courseName){
+        double hours = doubleInput("How many hours completed for " + courseName + ": ", true);
+        double minutes = doubleInput("How many minutes completed for " + courseName + ": ", true) / 60;
+        return hours + minutes;
     }
     public static LocalDate getTargetDate(){
         int year;
@@ -112,5 +114,9 @@ public class GetInput {
                 System.out.println("Give a proper date");
             }
         }
+    }
+    public static double round(double val){
+        int valUp = (int) (val * 100) + 50;
+        return (double) valUp / 100.0;
     }
 }

@@ -15,8 +15,7 @@ public class InputManagement {
         Set<String> coursesNames = manager.getCoursesNames();
         String[] namesInArray = coursesNames.toArray(new String[0]);
         int choiceIndex = GetInput.selectOption(namesInArray);
-        double hours = GetInput.getHoursCompleted("How many hours completed for " + namesInArray[choiceIndex] +
-                ": ");
+        double hours = GetInput.getHoursCompleted(namesInArray[choiceIndex]);
         manager.editCourse(namesInArray[choiceIndex], hours);
     }
     public void removeCourse(){
