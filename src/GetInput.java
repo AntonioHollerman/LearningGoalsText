@@ -87,7 +87,9 @@ public class GetInput {
         return stringInput("Course name: ");
     }
     public static double getCourseHours(){
-        return doubleInput("Amount of hours: ", false);
+        double hours = doubleInput("Amount of hours: ", false);
+        double mins = doubleInput("Amount of minutes: ", false);
+        return hours + (mins / 60);
     }
     public static double getHoursCompleted(String display){
         return doubleInput(display, true);
