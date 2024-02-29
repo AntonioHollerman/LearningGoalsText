@@ -142,7 +142,8 @@ public class DbManager {
     public void displayInfo() {
         Set<String> courses = coursesMap.keySet();
         double courseHours;
-        double timeLeft = hoursNeededPerWeek - hoursLearningForTheWeek;
+        double timeLeft = hoursNeededPerWeek > hoursLearningForTheWeek ?
+                hoursNeededPerWeek - hoursLearningForTheWeek : 0;
         int minutesLearning = (int) ((timeLeft - (int) timeLeft) * 60);
 
         System.out.println("Percent Done: %" + GetInput.round(((hoursLearning / totalHours) * 100)));
