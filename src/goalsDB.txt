@@ -1,5 +1,5 @@
 249.0
-4.75
+2.183333333333333
 2024-06-06
-2024-02-26
-Java:62.916666666666664 - Data Engineering:100.0 - Blender:13.0 - TensorFlow:50.0
+2024-03-04
+Java:60.733333333333334 - Data Engineering:100.0 - Blender:13.0 - TensorFlow:50.0
