@@ -1,5 +1,5 @@
-249.0
-2.2333333333333334
-2024-06-06
-2024-03-04
-Java:55.266666666666666 - Data Engineering:100.0 - Blender:13.0 - TensorFlow:50.0
+371.0
+0.0
+2024-08-17
+2024-06-03
+C#:45.5 - Blender Megacourse:129.5 - Unity:36.5 - Java SE 17:40.0 - 3D Animation:33.5 - AWS:27.0 - TensorFlow:59.0

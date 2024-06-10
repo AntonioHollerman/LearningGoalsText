@@ -53,6 +53,9 @@ public class DbManager {
         return coursesMap.keySet();
     }
     private LocalDate formatDate(String date){
+        if (date.equals("null")){
+            return null;
+        }
         String[] info = date.split("-");
         int year = Integer.parseInt(info[0]);
         int month = Integer.parseInt(info[1]);
@@ -62,6 +65,11 @@ public class DbManager {
     private void checkDate(String lastMonday){
         LocalDate mondayDate = formatDate(lastMonday);
         LocalDate currentDate = LocalDate.now();
+
+        if (mondayDate == null){
+            mondayDate = currentDate.with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
+        }
+
         long days = ChronoUnit.DAYS.between(mondayDate, currentDate);
         if (days >= 7){
             hoursLearningForTheWeek = 0;
